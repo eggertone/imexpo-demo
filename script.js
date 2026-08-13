@@ -2,8 +2,7 @@
 // Wklej tu prawdziwy URL webhooka z n8n (node "Webhook Demo (przeglądarka)").
 // Podczas testów użyj "Test URL" z n8n, do wysyłki linku Karolowi – "Production URL"
 // (po włączeniu workflow / aktywacji, patrz README).
-const WEBHOOK_URL = "TU_WKLEJ_PRAWDZIWY_URL_WEBHOOKA";
-
+const WEBHOOK_URL = "https://amy145-20145.mikrus.cloud/webhook/imexpo-demo";
 // Musi być identyczny jak wartość w węźle "IF: sekret poprawny?" w n8n.
 const DEMO_SECRET = "IMEXPO-DEMO-2026";
 // =========================================
