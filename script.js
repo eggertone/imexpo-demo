@@ -1,0 +1,72 @@
+// ======= JEDYNE MIEJSCE DO EDYCJI =======
+// Wklej tu prawdziwy URL webhooka z n8n (node "Webhook Demo (przeglądarka)").
+// Podczas testów użyj "Test URL" z n8n, do wysyłki linku Karolowi – "Production URL"
+// (po włączeniu workflow / aktywacji, patrz README).
+const WEBHOOK_URL = "TU_WKLEJ_PRAWDZIWY_URL_WEBHOOKA";
+
+// Musi być identyczny jak wartość w węźle "IF: sekret poprawny?" w n8n.
+const DEMO_SECRET = "IMEXPO-DEMO-2026";
+// =========================================
+
+let sessionId = "demo-karol";
+
+const chatEl = document.getElementById("chat");
+const formEl = document.getElementById("composer");
+const inputEl = document.getElementById("messageInput");
+const resetBtn = document.getElementById("resetBtn");
+
+function addMessage(text, sender) {
+  const bubble = document.createElement("div");
+  bubble.className = "bubble " + sender;
+  bubble.textContent = text;
+  chatEl.appendChild(bubble);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return bubble;
+}
+
+function addTyping() {
+  const bubble = document.createElement("div");
+  bubble.className = "bubble ai typing";
+  bubble.textContent = "Piszę...";
+  chatEl.appendChild(bubble);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return bubble;
+}
+
+async function sendMessage(text) {
+  addMessage(text, "user");
+  const typingBubble = addTyping();
+
+  try {
+    const response = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId, message: text, secret: DEMO_SECRET })
+    });
+
+    if (!response.ok) {
+      throw new Error("Zła odpowiedź serwera: " + response.status);
+    }
+
+    const data = await response.json();
+    typingBubble.remove();
+    addMessage(data.reply || "Brak odpowiedzi.", "ai");
+  } catch (err) {
+    console.error("Błąd komunikacji z chatbotem:", err);
+    typingBubble.remove();
+    addMessage("Nie udało się uzyskać odpowiedzi. Spróbuj ponownie.", "ai error");
+  }
+}
+
+formEl.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const text = inputEl.value.trim();
+  if (!text) return;
+  inputEl.value = "";
+  sendMessage(text);
+});
+
+resetBtn.addEventListener("click", () => {
+  sessionId = "demo-" + Math.random().toString(36).slice(2, 10);
+  chatEl.innerHTML = "";
+});

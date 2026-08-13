@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IMEXPO AI Assistant</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="header-title">
+        <span class="logo-dot"></span>
+        <div>
+          <div class="title">IMEXPO AI Assistant</div>
+          <div class="subtitle">Części do samochodów ciężarowych – demo</div>
+        </div>
+      </div>
+      <button id="resetBtn" class="reset-btn" type="button">Nowa rozmowa</button>
+    </header>
+
+    <main id="chat" class="chat"></main>
+
+    <form id="composer" class="composer">
+      <input
+        id="messageInput"
+        type="text"
+        placeholder="Napisz wiadomość, np. „Szukam skrzyni do Volvo FH 2018”"
+        autocomplete="off"
+      />
+      <button type="submit">Wyślij</button>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
